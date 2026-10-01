@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/gradeheatmap/db" VERSION="20261001" COMMENT="XMLDB file for Moodle local/gradeheatmap"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="local_gradeheatmap_course" COMMENT="Heatmap settings chosen by teachers for a course, overriding the site settings">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Course the colours apply to"/>
+        <FIELD NAME="mode" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Colouring mode (gradient or bands), or null for the site mode"/>
+        <FIELD NAME="palette" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Palette as JSON [{from, colour}], lowest first, or null for the site palette"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign-unique" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>

@@ -1,0 +1,10 @@
+{
+    "name": "adamjenkins/moodle-local_gradeheatmap",
+    "description": "Colour-codes the Moodle gradebook grader report by grade percentage, so teachers can see at a glance where students are struggling and excelling",
+    "type": "moodle-local",
+    "require": {
+        "moodle/moodle": ">=5.2 <5.4",
+        "moodle/composer-installer": "^1.0"
+    },
+    "license": "GPL-3.0-or-later"
+}

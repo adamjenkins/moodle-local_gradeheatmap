@@ -1,0 +1,56 @@
+/*
+ * Grade heatmap colours.
+ *
+ * All heatmap colours live in these custom properties. --local-gradeheatmap-colour-1 ... -N are the
+ * palette, lowest first; these are the default palette, and the palette in effect (site or course)
+ * overrides them with a more specific body.path-grade-report-grader rule printed in the page head.
+ * The AMD module only reads them: it resolves the colour for each cell from these properties and
+ * sets it as --local-gradeheatmap-cell-bg on the cell.
+ */
+.path-grade-report-grader {
+    --local-gradeheatmap-colour-1: #f28b82;
+    --local-gradeheatmap-colour-2: #fbbc77;
+    --local-gradeheatmap-colour-3: #fde68a;
+    --local-gradeheatmap-colour-4: #8fd19e;
+    --local-gradeheatmap-colour-5: #8ab4f8;
+    --local-gradeheatmap-text-dark: #1d2125;
+    --local-gradeheatmap-text-light: #fff;
+}
+
+.path-grade-report-grader .gradeparent tr td.cell.local-gradeheatmap-cell:not(.collapsed) {
+    background-color: var(--local-gradeheatmap-cell-bg, transparent);
+}
+
+/* Keep the grade text readable on the shading; inputs and selects in editing mode keep their own colours. */
+.path-grade-report-grader .gradeparent tr td.cell.local-gradeheatmap-text-dark:not(.collapsed) {
+    color: var(--local-gradeheatmap-text-dark);
+}
+
+.path-grade-report-grader .gradeparent tr td.cell.local-gradeheatmap-text-light:not(.collapsed) {
+    color: var(--local-gradeheatmap-text-light);
+}
+
+.path-grade-report-grader .gradeparent tr td.cell.local-gradeheatmap-cell:not(.collapsed) .gradevalue,
+.path-grade-report-grader .gradeparent tr td.cell.local-gradeheatmap-cell:not(.collapsed) .dimmed_text,
+.path-grade-report-grader .gradeparent tr td.cell.local-gradeheatmap-cell:not(.collapsed) a {
+    color: inherit;
+}
+
+/* Hidden grades: core's muted text colour would be unreadable on the shading, so mark them in italics instead. */
+.path-grade-report-grader .gradeparent tr td.cell.local-gradeheatmap-cell:not(.collapsed) .dimmed_text {
+    font-style: italic;
+}
+
+.path-grade-report-grader .local-gradeheatmap-togglewrapper .form-check-input {
+    cursor: pointer;
+}
+
+.local-gradeheatmap-palette .local-gradeheatmap-palette-from {
+    width: 6.5rem;
+}
+
+.local-gradeheatmap-palette input[type="color"] {
+    flex: 0 0 3rem;
+    width: 3rem;
+    height: calc(1.5em + .75rem + 2px);
+}

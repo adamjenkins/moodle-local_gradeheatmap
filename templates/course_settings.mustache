@@ -1,0 +1,92 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_gradeheatmap/course_settings
+
+    The grade heatmap section of the grader report preferences page. Rendered hidden in the page
+    footer; the local_gradeheatmap/preferences module moves it into core's preferences form, so the
+    form's own Save button submits it.
+
+    Context variables required for this template:
+    * marker - Name of the hidden field marking a submission of this section.
+    * modename - Name of the mode select.
+    * modes - Mode options: value, label, selected.
+    * usecustomname - Name of the "use a custom palette" checkbox.
+    * usecustom - Whether the course has its own palette.
+    * editor - Context for local_gradeheatmap/palette_editor.
+
+    Example context (json):
+    {
+        "marker": "local_gradeheatmap_settings",
+        "modename": "local_gradeheatmap_mode",
+        "modes": [
+            {"value": "", "label": "Site default (Smooth gradient)", "selected": true},
+            {"value": "bands", "label": "Discrete bands", "selected": false}
+        ],
+        "usecustomname": "local_gradeheatmap_usecustom",
+        "usecustom": false,
+        "editor": {
+            "name": "local_gradeheatmap_palette",
+            "rows": [
+                {"name": "local_gradeheatmap_palette", "number": 1, "from": 0, "colour": "#f28b82", "first": true,
+                    "disabled": true},
+                {"name": "local_gradeheatmap_palette", "number": 2, "from": 100, "colour": "#8ab4f8", "first": false,
+                    "disabled": true}
+            ],
+            "newrow": {"name": "local_gradeheatmap_palette", "number": 0, "from": "", "colour": "#ffffff",
+                "first": false, "disabled": true},
+            "disabled": true,
+            "mincolours": 2,
+            "maxcolours": 20
+        }
+    }
+}}
+<fieldset class="mb-3 local-gradeheatmap-coursesettings" data-region="local-gradeheatmap-coursesettings"
+    id="id_local_gradeheatmap_coursesettings" hidden>
+    <legend class="h3 mt-3">{{#str}}coursesettings, local_gradeheatmap{{/str}}</legend>
+    <input type="hidden" name="{{marker}}" value="1">
+    <p class="text-muted">{{#str}}coursesettings_help, local_gradeheatmap{{/str}}</p>
+    <div class="mb-3 row fitem">
+        <div class="col-md-3 col-form-label pb-0 pe-md-0">
+            <label class="mb-0" for="id_{{modename}}">{{#str}}mode, local_gradeheatmap{{/str}}</label>
+        </div>
+        <div class="col-md-9 felement">
+            <select class="form-select w-auto" name="{{modename}}" id="id_{{modename}}">
+                {{#modes}}
+                    <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                {{/modes}}
+            </select>
+        </div>
+    </div>
+    <div class="mb-3 row fitem">
+        <div class="col-md-3 col-form-label pb-0 pe-md-0">
+            <span class="mb-0">{{#str}}palette, local_gradeheatmap{{/str}}</span>
+        </div>
+        <div class="col-md-9 felement">
+            <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input" name="{{usecustomname}}" id="id_{{usecustomname}}"
+                    value="1" data-action="local-gradeheatmap-usecustom" {{#usecustom}}checked{{/usecustom}}>
+                <label class="form-check-label" for="id_{{usecustomname}}">
+                    {{#str}}usecustompalette, local_gradeheatmap{{/str}}
+                </label>
+            </div>
+            {{#editor}}
+                {{> local_gradeheatmap/palette_editor }}
+            {{/editor}}
+        </div>
+    </div>
+</fieldset>

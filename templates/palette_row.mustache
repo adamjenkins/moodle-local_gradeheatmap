@@ -1,0 +1,57 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_gradeheatmap/palette_row
+
+    One colour of the palette editor.
+
+    Context variables required for this template:
+    * name - Form field name prefix.
+    * number - Position of the colour, 1 for the lowest.
+    * from - Start percentage.
+    * colour - Colour as #rrggbb.
+    * first - Whether this is the lowest colour (always starts at 0%).
+    * disabled - Whether the inputs are disabled.
+
+    Example context (json):
+    {
+        "name": "s_local_gradeheatmap_palette",
+        "number": 2,
+        "from": 50,
+        "colour": "#fbbc77",
+        "first": false,
+        "disabled": false
+    }
+}}
+<div class="local-gradeheatmap-palette-row d-flex flex-wrap align-items-center mb-2" data-region="row">
+    <label class="d-flex align-items-center mb-0 me-3">
+        <span class="me-2">{{#str}}colour, local_gradeheatmap{{/str}} <span data-region="number">{{number}}</span></span>
+        <input type="color" class="form-control form-control-color" name="{{name}}[colour][]" value="{{colour}}"
+            data-region="colour" {{#disabled}}disabled{{/disabled}}>
+    </label>
+    <label class="d-flex align-items-center mb-0 me-2">
+        <span class="visually-hidden">{{#str}}colour, local_gradeheatmap{{/str}} <span data-region="number">{{number}}</span></span>
+        <span class="me-2">{{#str}}startsat, local_gradeheatmap{{/str}}</span>
+        <input type="number" class="form-control local-gradeheatmap-palette-from" name="{{name}}[from][]" value="{{from}}"
+            min="0" max="100" step="0.01" required data-region="from"
+            {{#first}}readonly{{/first}} {{#disabled}}disabled{{/disabled}}>
+        <span class="ms-1">%</span>
+    </label>
+    <button type="button" class="btn btn-link p-1" data-action="remove" {{#disabled}}disabled{{/disabled}}>
+        {{#pix}}t/delete, core, {{#str}}removecolour, local_gradeheatmap{{/str}}{{/pix}}
+    </button>
+</div>
