@@ -1,0 +1,23 @@
+# camp listing manifest — descriptive content for your plugin's page.
+# Edit freely and commit; camp ingests this file at each tagged release.
+# Schema: https://camp-registry.org/schema/listing.schema.json
+name: local_gradeheatmap
+summary: 'Colour-codes the cells of the Moodle grader report by grade percentage, so teachers can see where students struggle and excel.'
+description: |
+  For teachers using the gradebook grader report. Each grade, category total
+  and course total cell is shaded by its percentage of the item's range, from
+  red through orange and yellow to green, with blue reserved for full marks.
+  Grade values are never changed. Admins set a site-wide gradient or banded
+  palette, teachers can override it per course, and each user can switch the
+  shading on or off from the report's action bar.
+labels:
+  # Required disclosure labels — pick all that apply (RFC §4.7):
+  #   fully-free | freemium | paid-service | external-account
+  #   donation-supported | commercial-support-available
+  - fully-free
+# screenshots:
+#   - path: .camp/screenshots/overview.png
+#     caption: Main view
+links:
+  docs: https://github.com/adamjenkins/moodle-local_gradeheatmap#readme
+  issues: https://github.com/adamjenkins/moodle-local_gradeheatmap/issues
