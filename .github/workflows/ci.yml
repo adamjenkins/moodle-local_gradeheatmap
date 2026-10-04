@@ -8,14 +8,11 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-24.04
-    # moodle.git main (= 5.3 until MOODLE_503_STABLE is branched) is a moving target:
-    # its rows may fail without failing the run.
-    continue-on-error: ${{ matrix.experimental == true }}
 
     services:
       postgres:
         # Each branch's own minimum, from its environment.xml: 5.2 requires PostgreSQL >= 16,
-        # 5.3 (main) requires >= 17. A newer image would mask minimum-version breakage.
+        # 5.3 requires >= 17. A newer image would mask minimum-version breakage.
         image: ${{ matrix.database == 'pgsql' && matrix.pgsql-image || '' }}
         env:
           POSTGRES_USER: 'postgres'
@@ -25,7 +22,7 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 3
 
       mariadb:
-        # 5.2 requires MariaDB >= 10.11, 5.3 (main) requires >= 11.4. healthcheck.sh exists in both
+        # 5.2 requires MariaDB >= 10.11, 5.3 requires >= 11.4. healthcheck.sh exists in both
         # images (mysqladmin does not exist in 11.x).
         image: ${{ matrix.database == 'mariadb' && matrix.mariadb-image || '' }}
         env:
@@ -38,20 +35,19 @@ jobs:
 
     strategy:
       fail-fast: false
-      # Moodle 5.2 and 5.3 only. MOODLE_503_STABLE does not exist yet (moodle.git main is 5.3rc1),
-      # so 5.3 runs on main. Both branches support PHP 8.3 and 8.4 (environment.xml minimum 8.3;
-      # core's own .github/workflows/push.yml tests 8.3 lowest and 8.4 highest), each on both
-      # PostgreSQL and MariaDB.
+      # Moodle 5.2 and 5.3 only, all rows blocking. Both branches support PHP 8.3 and 8.4
+      # (environment.xml minimum 8.3; core's own .github/workflows/push.yml tests 8.3 lowest and
+      # 8.4 highest), each on both PostgreSQL and MariaDB.
       matrix:
         include:
           - {moodle-branch: MOODLE_502_STABLE, php: '8.3', database: pgsql, pgsql-image: 'postgres:16'}
           - {moodle-branch: MOODLE_502_STABLE, php: '8.3', database: mariadb, mariadb-image: 'mariadb:10.11'}
           - {moodle-branch: MOODLE_502_STABLE, php: '8.4', database: pgsql, pgsql-image: 'postgres:16'}
           - {moodle-branch: MOODLE_502_STABLE, php: '8.4', database: mariadb, mariadb-image: 'mariadb:10.11'}
-          - {moodle-branch: main, php: '8.3', database: pgsql, pgsql-image: 'postgres:17', experimental: true}
-          - {moodle-branch: main, php: '8.3', database: mariadb, mariadb-image: 'mariadb:11.4', experimental: true}
-          - {moodle-branch: main, php: '8.4', database: pgsql, pgsql-image: 'postgres:17', experimental: true}
-          - {moodle-branch: main, php: '8.4', database: mariadb, mariadb-image: 'mariadb:11.4', experimental: true}
+          - {moodle-branch: MOODLE_503_STABLE, php: '8.3', database: pgsql, pgsql-image: 'postgres:17'}
+          - {moodle-branch: MOODLE_503_STABLE, php: '8.3', database: mariadb, mariadb-image: 'mariadb:11.4'}
+          - {moodle-branch: MOODLE_503_STABLE, php: '8.4', database: pgsql, pgsql-image: 'postgres:17'}
+          - {moodle-branch: MOODLE_503_STABLE, php: '8.4', database: mariadb, mariadb-image: 'mariadb:11.4'}
 
     steps:
       - name: Check out repository code
