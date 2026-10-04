@@ -2,7 +2,7 @@
 
 All notable changes to the Grade heatmap plugin are documented in this file.
 
-## [0.1.0] - 2026-10-01
+## [0.1.1] - 2026-10-04
 
 ### Added
 
@@ -17,4 +17,4 @@ All notable changes to the Grade heatmap plugin are documented in this file.
 - Per-user on/off switch on the grader report, saved as a user preference.
 - Capabilities `local/gradeheatmap:view` and `local/gradeheatmap:manage`.
 - Course backup and restore of the course settings; privacy provider for the user preference.
-- Supports Moodle 5.2 and 5.3.
+- Supports Moodle 5.2 and 5.3; installable with Composer (`composer.json`).

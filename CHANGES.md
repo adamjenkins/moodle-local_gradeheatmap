@@ -1,4 +1,4 @@
-## 0.1.0
+## v0.1.1
 
 First release.
 
@@ -8,4 +8,4 @@ First release.
   100% is used only for full marks.
 - Site settings, per-course mode and palette for teachers on the grader report preferences
   page, and a per-user on/off switch on the report.
-- Supports Moodle 5.2 and 5.3.
+- Supports Moodle 5.2 and 5.3; installable with Composer (`composer.json`).
