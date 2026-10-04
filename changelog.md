@@ -2,6 +2,15 @@
 
 All notable changes to the Grade heatmap plugin are documented in this file.
 
+## [0.1.2] - 2026-10-04
+
+### Changed
+
+- Continuous integration tests against the released Moodle 5.3 (MOODLE_503_STABLE) instead of
+  Moodle's development branch.
+- composer.json: the moodle/moodle requirement uses a caret constraint (`^5.2`), so later
+  Moodle 5.x releases are no longer excluded.
+
 ## [0.1.1] - 2026-10-04
 
 ### Added

@@ -1,11 +1,6 @@
-## v0.1.1
+## v0.1.2
 
-First release.
-
-- Shades grader report cells by grade percentage (regular items, category totals, course
-  total), including scales, non-zero minimums and overridden grades.
-- Smooth gradient or discrete bands, with a palette of 2 to 20 colours; a colour starting at
-  100% is used only for full marks.
-- Site settings, per-course mode and palette for teachers on the grader report preferences
-  page, and a per-user on/off switch on the report.
-- Supports Moodle 5.2 and 5.3; installable with Composer (`composer.json`).
+- Continuous integration now tests against the released Moodle 5.3 (MOODLE_503_STABLE)
+  instead of Moodle's development branch.
+- composer.json: the moodle/moodle requirement now uses a caret constraint (`^5.2`), so later
+  Moodle 5.x releases are no longer excluded.
