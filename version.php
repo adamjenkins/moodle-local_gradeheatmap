@@ -25,8 +25,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_gradeheatmap';
-$plugin->version   = 2026100401;
+$plugin->version   = 2026100402;
 $plugin->requires  = 2026042000.00; // Moodle 5.2.0 (public/version.php at tag v5.2.0).
 $plugin->supported = [502, 503];
 $plugin->maturity  = MATURITY_BETA;
-$plugin->release   = '0.1.2';
+$plugin->release   = '0.1.3';
