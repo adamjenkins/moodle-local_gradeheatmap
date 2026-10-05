@@ -1,3 +1,3 @@
-## v0.1.3
+## v0.1.4
 
-- No change to the plugin itself. Release archives now leave out development files (.github, .camp, tests and similar), and this release publishes the 0.1.2 changes to the camp registry, where the 0.1.2 publish did not complete. See changelog.md for 0.1.2.
+- No change to the plugin itself. The camp listing now shows six screenshots: the grader report with the default gradient, totals and scale grades, discrete bands, the course settings section, a custom course palette, and the site settings.

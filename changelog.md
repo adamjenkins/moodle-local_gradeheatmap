@@ -2,6 +2,13 @@
 
 All notable changes to the Grade heatmap plugin are documented in this file.
 
+## [0.1.4] - 2026-10-05
+
+### Added
+
+- Six screenshots in the camp listing manifest (`.camp/screenshots/`, listed in `.camp/listing.yml`). No change to the
+  plugin itself.
+
 ## [0.1.3] - 2026-10-04
 
 ### Changed

@@ -15,9 +15,19 @@ labels:
   #   fully-free | freemium | paid-service | external-account
   #   donation-supported | commercial-support-available
   - fully-free
-# screenshots:
-#   - path: .camp/screenshots/overview.png
-#     caption: Main view
+screenshots:
+  - path: .camp/screenshots/01-grader-heatmap.png
+    caption: 'Grader report with the default gradient: low grades red, through orange and yellow to green, full marks blue'
+  - path: .camp/screenshots/02-totals-scales-empty.png
+    caption: Category and course totals and scale grades are shaded too; ungraded cells stay plain
+  - path: .camp/screenshots/03-discrete-bands.png
+    caption: Discrete bands mode, one solid colour per band, chosen for a course by its teacher
+  - path: .camp/screenshots/04-course-settings.png
+    caption: The Grade heatmap section on the grader report preferences page, with a custom course palette
+  - path: .camp/screenshots/05-custom-palette.png
+    caption: The same report shaded with that custom orange-to-purple palette
+  - path: .camp/screenshots/06-admin-settings.png
+    caption: 'Site settings: enable the heatmap, choose the mode and edit the default palette with colour pickers'
 links:
   docs: https://github.com/adamjenkins/moodle-local_gradeheatmap#readme
   issues: https://github.com/adamjenkins/moodle-local_gradeheatmap/issues
