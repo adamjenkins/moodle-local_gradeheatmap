@@ -156,17 +156,16 @@ final class course_settings_test extends \advanced_testcase {
     }
 
     /**
-     * The settings travel with a course backup into the restored course.
+     * Backs a course up and restores it into a new course.
+     *
+     * @param \stdClass $course
+     * @param callable|null $tamper Called with the backup's temp directory before the restore runs.
+     * @return int The new course id.
      */
-    public function test_backup_restore(): void {
+    protected function backup_and_restore(\stdClass $course, ?callable $tamper = null): int {
         global $CFG, $USER;
         require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
         require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php');
-        $this->resetAfterTest();
-        $this->setAdminUser();
-
-        $course = $this->getDataGenerator()->create_course();
-        course_settings::set($course->id, settings::MODE_BANDS, $this->custom_palette());
 
         $bc = new \backup_controller(
             \backup::TYPE_1COURSE,
@@ -180,7 +179,11 @@ final class course_settings_test extends \advanced_testcase {
         $bc->execute_plan();
         $bc->destroy();
 
-        $newcourseid = \restore_dbops::create_new_course('Restored', 'R1', $course->category);
+        if ($tamper) {
+            $tamper(make_backup_temp_directory($backupid));
+        }
+
+        $newcourseid = \restore_dbops::create_new_course('Restored', 'R' . $course->id, $course->category);
         $rc = new \restore_controller(
             $backupid,
             $newcourseid,
@@ -192,8 +195,68 @@ final class course_settings_test extends \advanced_testcase {
         $this->assertTrue($rc->execute_precheck());
         $rc->execute_plan();
         $rc->destroy();
+        return (int) $newcourseid;
+    }
+
+    /**
+     * The settings travel with a course backup into the restored course.
+     */
+    public function test_backup_restore(): void {
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $course = $this->getDataGenerator()->create_course();
+        course_settings::set($course->id, settings::MODE_BANDS, $this->custom_palette());
+
+        $newcourseid = $this->backup_and_restore($course);
 
         $this->assertSame(settings::MODE_BANDS, course_settings::get_mode($newcourseid));
         $this->assertTrue(course_settings::get_palette($newcourseid)->equals($this->custom_palette()));
+    }
+
+    /**
+     * A backup carrying an unknown mode and a palette with markup restores as the site settings.
+     */
+    public function test_restore_rejects_tampered_settings(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $this->setAdminUser();
+        set_config('mode', settings::MODE_GRADIENT, 'local_gradeheatmap');
+
+        $course = $this->getDataGenerator()->create_course();
+        course_settings::set($course->id, settings::MODE_BANDS, $this->custom_palette());
+
+        $evilpalette = '[{"from":0,"colour":"red;}</style><script>alert(1)</script>"},{"from":50,"colour":"#000000"}]';
+        $tamper = function (string $dir) use ($evilpalette): void {
+            $file = $dir . '/course/course.xml';
+            $replaced = 0;
+            $xml = preg_replace_callback(
+                '#<plugin_local_gradeheatmap_course>.*?</plugin_local_gradeheatmap_course>#s',
+                function (array $match) use ($evilpalette): string {
+                    $block = preg_replace('#<mode>.*?</mode>#s', '<mode>evil</mode>', $match[0]);
+                    return preg_replace(
+                        '#<palette>.*?</palette>#s',
+                        '<palette>' . htmlspecialchars($evilpalette, ENT_XML1) . '</palette>',
+                        $block
+                    );
+                },
+                file_get_contents($file),
+                -1,
+                $replaced
+            );
+            // Guard against a vacuous pass: the tampered values must really be in the backup.
+            $this->assertSame(1, $replaced);
+            $this->assertStringContainsString('<mode>evil</mode>', $xml);
+            $this->assertStringContainsString('&lt;/style&gt;&lt;script&gt;', $xml);
+            file_put_contents($file, $xml);
+        };
+
+        $newcourseid = $this->backup_and_restore($course, $tamper);
+
+        $this->assertFalse($DB->record_exists(course_settings::TABLE, ['courseid' => $newcourseid]));
+        $this->assertNull(course_settings::get_mode($newcourseid));
+        $this->assertNull(course_settings::get_palette($newcourseid));
+        $this->assertSame(settings::MODE_GRADIENT, settings::get_mode($newcourseid));
+        $this->assertTrue(settings::get_palette($newcourseid)->equals(settings::get_site_palette()));
     }
 }
