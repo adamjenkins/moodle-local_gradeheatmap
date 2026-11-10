@@ -2,6 +2,18 @@
 
 All notable changes to the Grade heatmap plugin are documented in this file.
 
+## [0.1.5] - 2026-11-10
+
+### Added
+
+- `db/uninstall.php`: `xmldb_local_gradeheatmap_uninstall()` deletes the `local_gradeheatmap_enabled` rows
+  (`hook_callbacks::PREFERENCE`) from `user_preferences`, which core's uninstall does not remove. New test
+  `tests/uninstall_test.php`.
+- Plugin icon `pix/icon.svg` for the admin plugins page.
+- `tests/local/course_settings_test.php`: restore tests with a tampered backup (an unknown mode, and a palette
+  containing `</style><script>`), checking the restored course falls back to the site settings. The backup and
+  restore steps are shared in a `backup_and_restore()` helper.
+
 ## [0.1.4] - 2026-10-05
 
 ### Added
